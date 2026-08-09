@@ -1,8 +1,9 @@
+import asteroid
+import asteroidfield
+import player
 import pygame
-from constants import SCREEN_WIDTH, SCREEN_HEIGHT
-
+from constants import SCREEN_HEIGHT, SCREEN_WIDTH
 from logger import log_state
-
 
 
 def main():
@@ -11,14 +12,49 @@ def main():
     print(f"Screen height: {SCREEN_HEIGHT}")
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    game_clock =pygame.time.Clock()
+    dt = 0.0
 
+    #creating groups 
+    updatable = pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
+    asteroids = pygame.sprite.Group()
+
+    #assign players in the Player class to containers 
+    player.Player.containers = (updatable, drawable)
+    #create player 1
+    player1 = player.Player( x = SCREEN_WIDTH /2, y = SCREEN_HEIGHT /2)  # noqa: F841
+
+    #assign asteroids to the containers 
+    asteroid.Asteroid.containers = (updatable, drawable, asteroids)
+
+    #assign the asteroid field to the updatable container as it's not an asteroid itself
+    asteroidfield.AsteroidField.containers = (updatable,)
+
+    #create an asteroid field
+    field1 = asteroidfield.AsteroidField()  # noqa: F841
+
+#create the game loop
     while True: 
+        dt = game_clock.tick(60) /1000
         log_state()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
         screen.fill("black")
+        #player1.update(dt)
+        #player1.draw(screen)
+        for entity in updatable:
+            entity.update(dt)
+        for entity in drawable:
+            entity.draw(screen)
         pygame.display.flip()
+        
+        #print(f"{dt}")
+
+
+
+
 
 
 if __name__ == "__main__":
