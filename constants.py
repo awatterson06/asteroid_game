@@ -5,7 +5,9 @@ SCREEN_HEIGHT = 720
 
 #player constants 
 PLAYER_RADIUS = 20 
-LINE_WIDTH = 2 
+LINE_WIDTH = 2
+SHOT_RADIUS = 5
+PLAYER_SHOT_SPEED = 500 
 
 #player attributes 
 PLAYER_TURN_SPEED = 300

@@ -1,6 +1,16 @@
-import pygame  # noqa: I001
+import pygame
+import shot
 from circleshape import CircleShape  # noqa: I001, RUF100
-from constants import PLAYER_RADIUS, LINE_WIDTH ,SCREEN_WIDTH, SCREEN_HEIGHT, PLAYER_TURN_SPEED, PLAYER_SPEED  # noqa: F401
+from constants import (  # noqa: F401
+    LINE_WIDTH,
+    PLAYER_RADIUS,
+    PLAYER_SHOT_SPEED,
+    PLAYER_SPEED,
+    PLAYER_TURN_SPEED,
+    SCREEN_HEIGHT,
+    SCREEN_WIDTH,
+)
+
 
 class Player(CircleShape):
 
@@ -35,6 +45,8 @@ class Player(CircleShape):
             self.move(dt)
         if keys[pygame.K_s]:
             self.move(dt * -1)
+        if keys[pygame.K_SPACE]:
+            self.shoot()
 
 
     def move(self,dt: float) -> None:
@@ -42,3 +54,8 @@ class Player(CircleShape):
         rotated_vector = unit_vector.rotate(self.rotation)
         rotated_with_speed_vector = rotated_vector * PLAYER_SPEED * dt
         self.position += rotated_with_speed_vector
+
+    def shoot(self):
+        bullet = shot.Shot(self.position.x, self.position.y)
+        velocity = pygame.Vector2(0,1).rotate(self.rotation)
+        bullet.velocity = velocity * PLAYER_SHOT_SPEED

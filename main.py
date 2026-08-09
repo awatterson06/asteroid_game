@@ -1,10 +1,12 @@
+import sys
+
 import asteroid
 import asteroidfield
 import player
 import pygame
-import sys
+import shot
 from constants import SCREEN_HEIGHT, SCREEN_WIDTH
-from logger import log_state, log_event
+from logger import log_event, log_state
 
 
 def main():
@@ -20,6 +22,7 @@ def main():
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
     asteroids = pygame.sprite.Group()
+    shots = pygame.sprite.Group()
 
     #assign players in the Player class to containers 
     player.Player.containers = (updatable, drawable)
@@ -33,8 +36,11 @@ def main():
     asteroidfield.AsteroidField.containers = (updatable,)
 
     #create an asteroid field
-    field1 = asteroidfield.AsteroidField()
+    field1 = asteroidfield.AsteroidField()  # noqa: F841
 
+    #containers for shots 
+    shot.Shot.containers = (shots, updatable, drawable)
+    
 #create the game loop
     while True: 
         dt = game_clock.tick(60) /1000
