@@ -27,7 +27,7 @@ def main():
     #assign players in the Player class to containers 
     player.Player.containers = (updatable, drawable)
     #create player 1
-    player1 = player.Player( x = SCREEN_WIDTH /2, y = SCREEN_HEIGHT /2)  # noqa: F841
+    player1 = player.Player( x = SCREEN_WIDTH /2, y = SCREEN_HEIGHT /2)
 
     #assign asteroids to the containers 
     asteroid.Asteroid.containers = (updatable, drawable, asteroids)
@@ -58,6 +58,12 @@ def main():
                     log_event("player_hit")
                     print("Game Over!")
                     sys.exit()
+            for rock in asteroids: 
+                for bullet in shots:
+                    if rock.collides_with(bullet) == True:
+                        log_event("asteroid_shot")
+                        rock.split()
+                        bullet.kill()
         #redraw the game 
         for entity in drawable:
             entity.draw(screen)
