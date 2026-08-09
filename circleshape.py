@@ -23,3 +23,17 @@ class CircleShape(pygame.sprite.Sprite):
     def update(self, dt: float) -> None:
         # must override
         pass
+
+    def collides_with(self, other) -> bool: 
+        distance = self.position.distance_to(other.position)
+        return distance <= (self.radius + other.radius)
+
+    """
+    Collision detection logic:
+    1. Calculate the Euclidean distance between the center points of the two circles:
+       d = sqrt((x2 - x1)^2 + (y2 - y1)^2)
+       pygame's distance_to() method performs this calculation efficiently.
+    2. Compare this distance to the sum of the two circles' radii.
+       If the distance between centers is less than or equal to the sum of radii,
+       the circles are overlapping or touching, indicating a collision.
+    """

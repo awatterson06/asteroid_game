@@ -2,8 +2,9 @@ import asteroid
 import asteroidfield
 import player
 import pygame
+import sys
 from constants import SCREEN_HEIGHT, SCREEN_WIDTH
-from logger import log_state
+from logger import log_state, log_event
 
 
 def main():
@@ -32,7 +33,7 @@ def main():
     asteroidfield.AsteroidField.containers = (updatable,)
 
     #create an asteroid field
-    field1 = asteroidfield.AsteroidField()  # noqa: F841
+    field1 = asteroidfield.AsteroidField()
 
 #create the game loop
     while True: 
@@ -42,10 +43,16 @@ def main():
             if event.type == pygame.QUIT:
                 return
         screen.fill("black")
-        #player1.update(dt)
-        #player1.draw(screen)
+        #update all game entities
         for entity in updatable:
             entity.update(dt)
+            #detect if any asteroid has collided with the player 
+            for rock in asteroids:
+                if rock.collides_with(player1) == True:
+                    log_event("player_hit")
+                    print("Game Over!")
+                    sys.exit()
+        #redraw the game 
         for entity in drawable:
             entity.draw(screen)
         pygame.display.flip()
